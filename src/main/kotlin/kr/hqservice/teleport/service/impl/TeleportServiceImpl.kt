@@ -5,8 +5,11 @@ import kr.hqservice.teleport.extension.sync
 import kr.hqservice.teleport.repository.TeleportRepository
 import kr.hqservice.teleport.service.TeleportService
 import org.bukkit.Location
+import org.bukkit.Material
 import org.bukkit.World
 import org.bukkit.block.BlockFace
+import org.bukkit.entity.Boat
+import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 
 class TeleportServiceImpl(
@@ -24,7 +27,7 @@ class TeleportServiceImpl(
                 val floorBlock = world.getBlockAt(randomX, height, randomZ)
                 val floorBlockType = floorBlock.type
 
-                if (!floorBlockType.isSolid) continue
+                if (floorBlockType != Material.WATER && !floorBlockType.isSolid) continue
 
                 val upBlock = floorBlock.getRelative(BlockFace.UP)
                 val upBlockType = upBlock.type
@@ -32,8 +35,17 @@ class TeleportServiceImpl(
                 val upBlock2 = upBlock.getRelative(BlockFace.UP)
                 val upBlockType2 = upBlock2.type
 
-                if (floorBlockType.isSolid && !upBlockType.isSolid && !upBlockType2.isSolid) {
-                    sync { player.teleport(upBlock.location.toCenterLocation()) }
+                if (floorBlockType != Material.AIR && !upBlockType.isSolid && !upBlockType2.isSolid) {
+                    sync {
+                        val upLocation = upBlock.location.toCenterLocation()
+                        player.teleport(upLocation)
+                        if (repository.isBoatEnable() && floorBlockType == Material.WATER) {
+                            val boat = world.spawnEntity(upLocation, EntityType.BOAT)
+                            if (boat is Boat) {
+                                boat.addPassenger(player)
+                            }
+                        }
+                    }
                     break
                 }
             }

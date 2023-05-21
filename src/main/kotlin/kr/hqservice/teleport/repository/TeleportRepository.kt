@@ -25,10 +25,13 @@ class TeleportRepository(
         config = YamlConfiguration.loadConfiguration(file)
     }
 
+    private var useBoat = false
+
     private var xRange = -5000..5000
     private var zRange = -5000..5000
 
     fun load() {
+        useBoat = config.getBoolean("use-boat")
         config.getConfigurationSection("limit")?.apply {
             xRange = getConfigurationSection("x").getRange()
             zRange = getConfigurationSection("z").getRange()
@@ -47,4 +50,6 @@ class TeleportRepository(
     fun getRandomX() = xRange.random()
 
     fun getRandomZ() = zRange.random()
+
+    fun isBoatEnable() = useBoat
 }
