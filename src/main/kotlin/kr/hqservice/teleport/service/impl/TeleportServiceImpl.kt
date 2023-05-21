@@ -4,9 +4,7 @@ import kr.hqservice.teleport.extension.async
 import kr.hqservice.teleport.extension.sync
 import kr.hqservice.teleport.repository.TeleportRepository
 import kr.hqservice.teleport.service.TeleportService
-import org.bukkit.Bukkit
 import org.bukkit.Location
-import org.bukkit.Material
 import org.bukkit.World
 import org.bukkit.block.BlockFace
 import org.bukkit.entity.Player
