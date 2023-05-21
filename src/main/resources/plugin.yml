@@ -1,0 +1,12 @@
+name: HQRandomTeleport
+version: 1.0.0
+api-version: 1.13
+main: kr.hqservice.teleport.HQRandomTeleport
+authors: [ Cosine_A ]
+softdepend:
+  - MS-Core
+
+commands:
+  랜덤:
+    permission: op
+    description: 랜덤 이동 관련 명령어입니다.
