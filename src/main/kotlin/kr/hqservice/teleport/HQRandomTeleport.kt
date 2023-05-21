@@ -1,6 +1,7 @@
 package kr.hqservice.teleport
 
 import kr.hqservice.teleport.command.TeleportCommand
+import kr.hqservice.teleport.listener.BoatListener
 import kr.hqservice.teleport.repository.TeleportRepository
 import kr.hqservice.teleport.service.TeleportService
 import kr.hqservice.teleport.service.impl.TeleportServiceImpl
@@ -39,6 +40,8 @@ class HQRandomTeleport : JavaPlugin(), Listener {
         teleportRepository.load()
 
         teleportService = TeleportServiceImpl(teleportRepository)
+
+        server.pluginManager.registerEvents(BoatListener(), this)
 
         getCommand("랜덤")?.executor = TeleportCommand(this)
     }

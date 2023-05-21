@@ -1,5 +1,6 @@
 package kr.hqservice.teleport.service.impl
 
+import kr.hqservice.teleport.HQRandomTeleport.Companion.plugin
 import kr.hqservice.teleport.extension.async
 import kr.hqservice.teleport.extension.sync
 import kr.hqservice.teleport.repository.TeleportRepository
@@ -11,6 +12,9 @@ import org.bukkit.block.BlockFace
 import org.bukkit.entity.Boat
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
+import org.bukkit.metadata.FixedMetadataValue
+import org.bukkit.metadata.MetadataValue
+import org.bukkit.metadata.MetadataValueAdapter
 
 class TeleportServiceImpl(
     private val repository: TeleportRepository
@@ -41,6 +45,7 @@ class TeleportServiceImpl(
                         player.teleport(upLocation)
                         if (repository.isBoatEnable() && floorBlockType == Material.WATER) {
                             val boat = world.spawnEntity(upLocation, EntityType.BOAT)
+                            boat.setMetadata("temporary-boat", FixedMetadataValue(plugin, true))
                             if (boat is Boat) {
                                 boat.addPassenger(player)
                             }
