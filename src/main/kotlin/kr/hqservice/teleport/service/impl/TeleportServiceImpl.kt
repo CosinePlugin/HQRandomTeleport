@@ -13,8 +13,6 @@ import org.bukkit.entity.Boat
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 import org.bukkit.metadata.FixedMetadataValue
-import org.bukkit.metadata.MetadataValue
-import org.bukkit.metadata.MetadataValueAdapter
 
 class TeleportServiceImpl(
     private val repository: TeleportRepository

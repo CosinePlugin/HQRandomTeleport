@@ -26,7 +26,7 @@ class TeleportCommand(
     private fun printHelp(player: CommandSender) {
         player.sendMessage("$prefix 랜덤 티피 명령어 도움말")
         player.sendMessage("")
-        player.sendMessage("$prefix /랜덤 이동 [월드]")
+        player.sendMessage("$prefix /랜덤 이동 [월드] [유저]")
         player.sendMessage("$prefix /랜덤 리로드")
     }
 
@@ -41,19 +41,26 @@ class TeleportCommand(
                     sender.sendMessage("$prefix 월드를 입력해주세요.")
                     return
                 }
-                teleport(sender, args[1])
+                val server = sender.server
+                val worldName = args[1]
+                val world = server.getWorld(worldName)
+                if (world == null) {
+                    sender.sendMessage("$prefix 존재하지 않는 월드입니다.")
+                    return
+                }
+                if (args.size == 2) {
+                    sender.sendMessage("$prefix 닉네임을 입력해주세요.")
+                    return
+                }
+                val targetName = args[2]
+                val target = server.getPlayer(targetName) ?: run {
+                    sender.sendMessage("$prefix 존재하지 않는 유저입니다.")
+                    return
+                }
+                teleportService.teleport(world, target)
             }
             "리로드" -> reload(sender)
         }
-    }
-
-    private fun teleport(player: Player, worldName: String) {
-        val world = player.server.getWorld(worldName)
-        if (world == null) {
-            player.sendMessage("$prefix 존재하지 않는 월드입니다.")
-            return
-        }
-        teleportService.teleport(world, player)
     }
 
     private fun reload(sender: CommandSender) {
